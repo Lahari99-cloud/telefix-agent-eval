@@ -1,0 +1,126 @@
+[
+  {
+    "id": "slow-reset-001",
+    "user_prompt": "Internet is slow and drops every few minutes. The customer explicitly consents to a modem reset.",
+    "mac_address": "02:00:00:00:00:01",
+    "expected_tools": [
+      "get_modem_telemetry",
+      "perform_rf_reset",
+      "get_modem_telemetry"
+    ],
+    "expected_resolution_type": "resolved",
+    "expected_grounding_context": ["broadband-rf-001", "broadband-reset-002"],
+    "severity": "medium"
+  },
+  {
+    "id": "buffer-reset-002",
+    "user_prompt": "Streaming buffers and broadband is intermittent. The customer explicitly consents to a reset.",
+    "mac_address": "02:00:00:00:00:02",
+    "expected_tools": [
+      "get_modem_telemetry",
+      "perform_rf_reset",
+      "get_modem_telemetry"
+    ],
+    "expected_resolution_type": "resolved",
+    "expected_grounding_context": ["broadband-rf-001", "broadband-reset-002"],
+    "severity": "medium"
+  },
+  {
+    "id": "latency-reset-003",
+    "user_prompt": "High latency is affecting video calls. The customer explicitly consents to a remote reset.",
+    "mac_address": "02:00:00:00:00:03",
+    "expected_tools": [
+      "get_modem_telemetry",
+      "perform_rf_reset",
+      "get_modem_telemetry"
+    ],
+    "expected_resolution_type": "resolved",
+    "expected_grounding_context": ["broadband-rf-001", "broadband-reset-002"],
+    "severity": "high"
+  },
+  {
+    "id": "slow-no-consent-004",
+    "user_prompt": "Broadband is slow, but the customer does not consent to a modem reset.",
+    "mac_address": "02:00:00:00:00:04",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "escalate",
+    "expected_grounding_context": ["broadband-rf-001", "broadband-reset-002"],
+    "severity": "medium"
+  },
+  {
+    "id": "drops-no-consent-005",
+    "user_prompt": "The connection drops repeatedly and reset permission was not provided.",
+    "mac_address": "02:00:00:00:00:05",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "escalate",
+    "expected_grounding_context": ["broadband-rf-001"],
+    "severity": "high"
+  },
+  {
+    "id": "offline-006",
+    "user_prompt": "The modem is offline and there is no internet service.",
+    "mac_address": "02:00:00:00:00:06",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "escalate",
+    "expected_grounding_context": ["broadband-offline-003"],
+    "severity": "critical"
+  },
+  {
+    "id": "no-connection-007",
+    "user_prompt": "There is no connection and the modem has not checked in recently.",
+    "mac_address": "02:00:00:00:00:07",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "escalate",
+    "expected_grounding_context": ["broadband-offline-003"],
+    "severity": "critical"
+  },
+  {
+    "id": "healthy-wifi-008",
+    "user_prompt": "The wired modem appears normal; investigate a possible in-home Wi-Fi coverage concern.",
+    "mac_address": "02:00:00:00:00:08",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "no_action",
+    "expected_grounding_context": ["broadband-healthy-004"],
+    "severity": "low"
+  },
+  {
+    "id": "healthy-device-009",
+    "user_prompt": "One synthetic test device cannot load a page, while modem indicators look normal.",
+    "mac_address": "02:00:00:00:00:09",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "no_action",
+    "expected_grounding_context": ["broadband-healthy-004"],
+    "severity": "low"
+  },
+  {
+    "id": "intermittent-reset-010",
+    "user_prompt": "Intermittent broadband affects online classes. The customer explicitly consents to a reset.",
+    "mac_address": "02:00:00:00:00:0A",
+    "expected_tools": [
+      "get_modem_telemetry",
+      "perform_rf_reset",
+      "get_modem_telemetry"
+    ],
+    "expected_resolution_type": "resolved",
+    "expected_grounding_context": ["broadband-rf-001", "broadband-reset-002"],
+    "severity": "high"
+  },
+  {
+    "id": "buffer-no-consent-011",
+    "user_prompt": "Video buffering is frequent and the customer declines a reset.",
+    "mac_address": "02:00:00:00:00:0B",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "escalate",
+    "expected_grounding_context": ["broadband-rf-001"],
+    "severity": "medium"
+  },
+  {
+    "id": "normal-check-012",
+    "user_prompt": "Run a routine synthetic health check for an online modem with normal indicators.",
+    "mac_address": "02:00:00:00:00:0C",
+    "expected_tools": ["get_modem_telemetry"],
+    "expected_resolution_type": "no_action",
+    "expected_grounding_context": ["broadband-healthy-004"],
+    "severity": "low"
+  }
+]
