@@ -132,7 +132,7 @@ TELEFIX_QDRANT_COLLECTION=synthetic_broadband_manuals
 The adapter intentionally filters by synthetic document tags. Embedding generation
 and ingestion are deployment concerns and are not required for the local demo.
 
-## Comcast Agent Evaluation Interview Demo
+## Agent Evaluation Interview Demo
 
 This repository is designed to support an Agent Evaluation interview discussion
 without using real Comcast systems or proprietary data.
@@ -262,11 +262,3 @@ Run the prompt A/B experiment:
 curl -X POST http://127.0.0.1:8000/api/v1/experiments/ab-test
 ```
 
-## Interview Discussion Points
-
-- Deterministic policy makes agent behavior and regressions easy to explain.
-- LangGraph provides explicit state transitions and a natural location for approval gates.
-- Tool outputs and RAG citations are separated from response composition.
-- Evaluations are returned with each trace, making quality measurable rather than anecdotal.
-- Production hardening would add authenticated adapters, observability, redaction,
-  resilience controls, human review, and a curated evaluation dataset.
