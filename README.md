@@ -1,12 +1,11 @@
 # Telefix Agent Evaluation
 
-An interview-ready FastAPI and LangGraph demo for evaluating a broadband
+ FastAPI and LangGraph demo for evaluating a broadband
 troubleshooting agent. The project resembles the workflow an agent might use in a
 large cable provider environment while using only synthetic manuals, deterministic
 mock telemetry, and a mock RF reset.
 
-No Comcast proprietary data, customer data, credentials, or production network
-interfaces are included.
+
 
 ## What It Demonstrates
 
