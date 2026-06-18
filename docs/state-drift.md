@@ -4,7 +4,7 @@ State-drift analysis detects deterministic signs that an agent's working context
 is degrading across a multi-step trajectory, especially during loops.
 
 It uses pure-Python token overlap metrics. It does not call LLMs, embeddings APIs,
-external model downloads, OpenTelemetry, storage, or dashboards.
+external model downloads, OpenTelemetry, or storage.
 
 ## Policy
 

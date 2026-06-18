@@ -62,4 +62,4 @@ release-blocking exit code `1`. In v1, incomplete canonical steps are reported a
 
 The CLI is a release-gating interface over canonical trajectories and the
 deterministic evaluator. It does not implement new metrics, OpenTelemetry
-parsing, storage clients, Redis consumers, dashboards, or CI/CD orchestration.
+parsing, storage clients, Redis consumers, or CI/CD orchestration.

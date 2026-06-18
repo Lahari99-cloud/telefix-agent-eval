@@ -29,7 +29,7 @@ Artifacts:
   children. Arbitrary framework payloads are preserved only in `input_context`,
   `output_context`, `tool_input`, and `tool_output`.
 - **Enums for analysis dimensions**: framework, node type, tool status, and risk
-  level are enums so dashboards and regression queries can aggregate reliably.
+  level are enums so regression queries can aggregate reliably.
 - **Ordered reconstruction**: steps are contiguous, zero-based, and ordered by
   `step_index`. `parent_step_index` represents graph or span ancestry when a
   framework has branching execution.

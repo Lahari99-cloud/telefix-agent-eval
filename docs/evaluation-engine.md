@@ -65,4 +65,4 @@ reported in `latency.incomplete_step_count`.
 
 The engine only reads canonical trajectory fields. It does not load spans, query
 ClickHouse, consume Redis, run CI/CD gates, perform state-drift analysis, call a
-judge model, or render dashboard views.
+judge model or presentation layer.

@@ -59,7 +59,7 @@ PowerShell:
 ```powershell
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -e ".[dev,dashboard]"
+pip install -e ".[dev]"
 ```
 
 macOS/Linux:
@@ -67,7 +67,7 @@ macOS/Linux:
 ```bash
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -e ".[dev,dashboard]"
+pip install -e ".[dev]"
 ```
 
 Run the live LangGraph demo:

@@ -81,5 +81,5 @@ spans for:
 ## Boundaries
 
 The example uses mock infrastructure only. It does not call external APIs, read
-ClickHouse, use Redis, run dashboards, or add new evaluation metrics. Telefix
+ClickHouse, use Redis, or add new evaluation metrics. Telefix
 consumes the exported spans through the existing T-REx adapter and evaluator.

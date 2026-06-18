@@ -41,5 +41,4 @@ Each scenario contains:
 - `expected_report.json`: expected machine-readable evaluation result.
 
 The demo uses existing T-REx and evaluator APIs only. It does not add metrics,
-parse OpenTelemetry outside the adapter, connect to storage, or run dashboard
-logic.
+parse OpenTelemetry outside the adapter, or connect to external storage.
