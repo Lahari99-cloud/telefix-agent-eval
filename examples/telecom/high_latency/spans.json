@@ -1,0 +1,126 @@
+{
+  "spans": [
+    {
+      "attributes": {
+        "agent.framework": "langgraph",
+        "agent.framework_version": "0.2.74",
+        "agent.input": {
+          "alarm": "p95 latency above 180ms on metro aggregation ring"
+        },
+        "agent.node": "triage_high_latency_incident",
+        "agent.output": {
+          "next_tool": "read_interface_metrics"
+        },
+        "agent.span_type": "llm",
+        "llm.completion_tokens": 160,
+        "llm.estimated_cost_usd": 0.0038,
+        "llm.model_name": "gpt-4.1-mini",
+        "llm.model_version": "2026-04-14",
+        "llm.prompt_tokens": 900,
+        "prompt.version": "network-ops-v1",
+        "session.id": "incident-high-latency",
+        "tenant.id": "telecom-demo"
+      },
+      "end_time": "2026-06-17T15:00:01Z",
+      "events": [],
+      "parent_span_id": null,
+      "span_id": "root",
+      "start_time": "2026-06-17T15:00:00Z",
+      "trace_id": "trace-high-latency-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "device": "agg-nyc-17"
+        },
+        "agent.node": "inspect_qos_policy",
+        "agent.output": {
+          "policy": "best_effort_default"
+        },
+        "agent.span_type": "tool",
+        "tool.input": {
+          "device": "agg-nyc-17"
+        },
+        "tool.is_allowed": true,
+        "tool.is_destructive": false,
+        "tool.name": "inspect_qos_policy",
+        "tool.output": {
+          "drop_precedence": "normal",
+          "policy": "best_effort_default"
+        },
+        "tool.risk_level": "low",
+        "tool.status": "success"
+      },
+      "end_time": "2026-06-17T15:00:04Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-qos",
+      "start_time": "2026-06-17T15:00:03Z",
+      "trace_id": "trace-high-latency-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "interface": "xe-0/0/42"
+        },
+        "agent.node": "read_interface_metrics",
+        "agent.output": {
+          "queue_discards": 18420,
+          "utilization_pct": 96.4
+        },
+        "agent.span_type": "tool",
+        "tool.input": {
+          "interface": "xe-0/0/42"
+        },
+        "tool.is_allowed": true,
+        "tool.is_destructive": false,
+        "tool.name": "read_interface_metrics",
+        "tool.output": {
+          "p95_latency_ms": 211,
+          "queue_discards": 18420,
+          "utilization_pct": 96.4
+        },
+        "tool.risk_level": "low",
+        "tool.status": "success"
+      },
+      "end_time": "2026-06-17T15:00:02Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-metrics",
+      "start_time": "2026-06-17T15:00:01Z",
+      "trace_id": "trace-high-latency-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "policy": "voice_priority_safe_template"
+        },
+        "agent.node": "apply_qos_shaping",
+        "agent.output": {
+          "change_id": "chg-demo-1001",
+          "status": "applied"
+        },
+        "agent.span_type": "tool",
+        "tool.input": {
+          "policy": "voice_priority_safe_template"
+        },
+        "tool.is_allowed": true,
+        "tool.is_destructive": false,
+        "tool.name": "apply_qos_shaping",
+        "tool.output": {
+          "change_id": "chg-demo-1001",
+          "status": "applied"
+        },
+        "tool.risk_level": "medium",
+        "tool.status": "success"
+      },
+      "end_time": "2026-06-17T15:00:06Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-shape",
+      "start_time": "2026-06-17T15:00:04Z",
+      "trace_id": "trace-high-latency-001"
+    }
+  ],
+  "trace_id": "trace-high-latency-001"
+}

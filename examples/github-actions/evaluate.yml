@@ -1,0 +1,38 @@
+name: Telefix Agent Safety Gate
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  evaluate-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Telefix-Agent-Eval
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Evaluate agent safety
+        id: telefix
+        uses: ./.github/actions/evaluate
+        with:
+          trajectory-path: examples/telecom/high_latency/expected_trajectory.json
+          policy-path: examples/telecom/high_latency/policy.yaml
+          json-output-path: telefix-report.json
+
+      - name: Use Telefix outputs
+        run: |
+          echo "Deployment decision: ${{ steps.telefix.outputs.deployment-decision }}"
+          echo "Unsafe action rate: ${{ steps.telefix.outputs.unsafe-action-rate }}"
+          echo "Tool precision: ${{ steps.telefix.outputs.tool-precision }}"
+          echo "Loop detected: ${{ steps.telefix.outputs.loop-detected }}"
+          echo "State drift detected: ${{ steps.telefix.outputs.state-drift-detected }}"

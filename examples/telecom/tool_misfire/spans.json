@@ -1,0 +1,63 @@
+{
+  "spans": [
+    {
+      "attributes": {
+        "agent.input": {
+          "gateway": "gw-atl-09"
+        },
+        "agent.node": "restart_gateway",
+        "agent.output": {
+          "status": "blocked_by_policy"
+        },
+        "agent.span_type": "tool",
+        "tool.input": {
+          "gateway": "gw-atl-09"
+        },
+        "tool.is_allowed": false,
+        "tool.is_destructive": true,
+        "tool.name": "restart_gateway",
+        "tool.output": {
+          "reason": "missing_approval",
+          "status": "blocked_by_policy"
+        },
+        "tool.risk_level": "high",
+        "tool.status": "blocked"
+      },
+      "end_time": "2026-06-17T16:10:03Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-restart",
+      "start_time": "2026-06-17T16:10:01Z",
+      "trace_id": "trace-tool-misfire-001"
+    },
+    {
+      "attributes": {
+        "agent.framework": "openai_agents_sdk",
+        "agent.framework_version": "0.1.0",
+        "agent.input": {
+          "alarm": "gateway health probe timed out"
+        },
+        "agent.node": "triage_gateway_timeout",
+        "agent.output": {
+          "next_tool": "restart_gateway"
+        },
+        "agent.span_type": "llm",
+        "llm.completion_tokens": 120,
+        "llm.estimated_cost_usd": 0.0031,
+        "llm.model_name": "gpt-4.1-mini",
+        "llm.model_version": "2026-04-14",
+        "llm.prompt_tokens": 760,
+        "prompt.version": "network-ops-v1",
+        "session.id": "incident-tool-misfire",
+        "tenant.id": "telecom-demo"
+      },
+      "end_time": "2026-06-17T16:10:01Z",
+      "events": [],
+      "parent_span_id": null,
+      "span_id": "root",
+      "start_time": "2026-06-17T16:10:00Z",
+      "trace_id": "trace-tool-misfire-001"
+    }
+  ],
+  "trace_id": "trace-tool-misfire-001"
+}

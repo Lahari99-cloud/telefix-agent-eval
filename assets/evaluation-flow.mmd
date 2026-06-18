@@ -1,0 +1,7 @@
+flowchart TD
+    A["Live Agent"] --> B["OTel Spans"]
+    B --> C["T-REx Reconstruction"]
+    C --> D["Trajectory"]
+    D --> E["Context Injection"]
+    E --> F["Policy Evaluation"]
+    F --> G["Deployment Decision"]

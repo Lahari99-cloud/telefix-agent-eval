@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.telefix.ai/trajectory/trajectory.v1.json",
+  "title": "Telefix Canonical Trajectory",
+  "description": "Versioned canonical trajectory contract between trace ingestion and evaluation services.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "trajectory_id",
+    "tenant_id",
+    "trace_id",
+    "framework_name",
+    "model_name",
+    "started_at",
+    "steps",
+    "cost_metrics",
+    "evaluation_labels"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "trajectory.v1",
+      "description": "Canonical trajectory schema version."
+    },
+    "trajectory_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Original OpenTelemetry trace identifier."
+    },
+    "session_id": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "framework_name": {
+      "type": "string",
+      "enum": ["langgraph", "openai_agents_sdk", "crewai", "custom", "unknown"]
+    },
+    "framework_version": {
+      "type": ["string", "null"],
+      "maxLength": 64
+    },
+    "model_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "model_version": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "prompt_version": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/trajectory_step"
+      }
+    },
+    "cost_metrics": {
+      "$ref": "#/$defs/cost_metrics"
+    },
+    "evaluation_labels": {
+      "$ref": "#/$defs/evaluation_labels"
+    }
+  },
+  "$defs": {
+    "json_value": {
+      "description": "Arbitrary JSON payload preserved from framework telemetry.",
+      "type": ["object", "array", "string", "number", "integer", "boolean", "null"]
+    },
+    "node_type": {
+      "type": "string",
+      "enum": ["llm", "tool", "human", "system", "chain"]
+    },
+    "tool_status": {
+      "type": "string",
+      "enum": ["success", "error", "timeout", "skipped", "blocked"]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["none", "low", "medium", "high", "critical"]
+    },
+    "trajectory_step": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "step_index",
+        "node_name",
+        "node_type",
+        "loop_iteration",
+        "input_context",
+        "output_context",
+        "start_time",
+        "latency_ms"
+      ],
+      "properties": {
+        "step_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "node_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "node_type": {
+          "$ref": "#/$defs/node_type"
+        },
+        "parent_step_index": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "loop_iteration": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_context": {
+          "$ref": "#/$defs/json_value"
+        },
+        "output_context": {
+          "$ref": "#/$defs/json_value"
+        },
+        "start_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_time": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "latency_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/tool_call"
+          },
+          "default": []
+        }
+      }
+    },
+    "tool_call": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "tool_name",
+        "tool_input",
+        "tool_output",
+        "tool_status",
+        "is_destructive",
+        "is_allowed",
+        "risk_level",
+        "retry_count",
+        "latency_ms"
+      ],
+      "properties": {
+        "tool_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "tool_input": {
+          "$ref": "#/$defs/json_value"
+        },
+        "tool_output": {
+          "$ref": "#/$defs/json_value"
+        },
+        "tool_status": {
+          "$ref": "#/$defs/tool_status"
+        },
+        "is_destructive": {
+          "type": "boolean"
+        },
+        "is_allowed": {
+          "type": "boolean"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/risk_level"
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_ms": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "cost_metrics": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "estimated_cost_usd"
+      ],
+      "properties": {
+        "prompt_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completion_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimated_cost_usd": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "evaluation_labels": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "expected_tool_sequence",
+        "actual_tool_sequence",
+        "unsafe_action_detected",
+        "loop_detected",
+        "escalation_required"
+      ],
+      "properties": {
+        "ground_truth_root_cause": {
+          "type": ["string", "null"],
+          "maxLength": 512
+        },
+        "expected_tool_sequence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "actual_tool_sequence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "unsafe_action_detected": {
+          "type": "boolean"
+        },
+        "loop_detected": {
+          "type": "boolean"
+        },
+        "escalation_required": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

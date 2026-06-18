@@ -1,0 +1,159 @@
+{
+  "spans": [
+    {
+      "attributes": {
+        "agent.framework": "crewai",
+        "agent.framework_version": "0.80.0",
+        "agent.input": {
+          "alarm": "BGP route withdrawn and re-announced repeatedly"
+        },
+        "agent.node": "triage_route_flap",
+        "agent.output": {
+          "next_tool": "read_bgp_neighbors"
+        },
+        "agent.span_type": "llm",
+        "llm.completion_tokens": 220,
+        "llm.estimated_cost_usd": 0.0049,
+        "llm.model_name": "gpt-4.1-mini",
+        "llm.model_version": "2026-04-14",
+        "llm.prompt_tokens": 1100,
+        "prompt.version": "network-ops-v1",
+        "session.id": "incident-bgp-flap",
+        "tenant.id": "telecom-demo"
+      },
+      "end_time": "2026-06-17T17:20:01Z",
+      "events": [],
+      "parent_span_id": null,
+      "span_id": "root",
+      "start_time": "2026-06-17T17:20:00Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.node": "read_bgp_neighbors",
+        "agent.span_type": "tool",
+        "tool.input": {
+          "router": "edge-sjc-04"
+        },
+        "tool.is_allowed": true,
+        "tool.is_destructive": false,
+        "tool.name": "read_bgp_neighbors",
+        "tool.output": {
+          "flaps": 14,
+          "peer": "203.0.113.8",
+          "state": "established"
+        },
+        "tool.risk_level": "low",
+        "tool.status": "success"
+      },
+      "end_time": "2026-06-17T17:20:02Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-neighbors",
+      "start_time": "2026-06-17T17:20:01Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.node": "inspect_route_policy",
+        "agent.span_type": "tool",
+        "tool.input": {
+          "peer": "203.0.113.8",
+          "router": "edge-sjc-04"
+        },
+        "tool.is_allowed": true,
+        "tool.is_destructive": false,
+        "tool.name": "inspect_route_policy",
+        "tool.output": {
+          "dampening": "disabled",
+          "max_prefix": 5000
+        },
+        "tool.risk_level": "low",
+        "tool.status": "success"
+      },
+      "end_time": "2026-06-17T17:20:03Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "tool-policy",
+      "start_time": "2026-06-17T17:20:02Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "iteration": 0,
+          "peer": "203.0.113.8"
+        },
+        "agent.node": "analyze_route_flap",
+        "agent.output": {
+          "decision": "recheck_peer_state"
+        },
+        "agent.span_type": "llm"
+      },
+      "end_time": "2026-06-17T17:20:04Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "analyze-loop-0",
+      "start_time": "2026-06-17T17:20:03Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "iteration": 1,
+          "peer": "203.0.113.8"
+        },
+        "agent.node": "analyze_route_flap",
+        "agent.output": {
+          "decision": "recheck_peer_state"
+        },
+        "agent.span_type": "llm"
+      },
+      "end_time": "2026-06-17T17:20:05Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "analyze-loop-1",
+      "start_time": "2026-06-17T17:20:04Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "iteration": 2,
+          "peer": "203.0.113.8"
+        },
+        "agent.node": "analyze_route_flap",
+        "agent.output": {
+          "decision": "recheck_peer_state"
+        },
+        "agent.span_type": "llm"
+      },
+      "end_time": "2026-06-17T17:20:06Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "analyze-loop-2",
+      "start_time": "2026-06-17T17:20:05Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    },
+    {
+      "attributes": {
+        "agent.input": {
+          "iteration": 3,
+          "peer": "203.0.113.8"
+        },
+        "agent.node": "analyze_route_flap",
+        "agent.output": {
+          "decision": "recheck_peer_state"
+        },
+        "agent.span_type": "llm"
+      },
+      "end_time": "2026-06-17T17:20:07Z",
+      "events": [],
+      "parent_span_id": "root",
+      "span_id": "analyze-loop-3",
+      "start_time": "2026-06-17T17:20:06Z",
+      "trace_id": "trace-bgp-route-flap-001"
+    }
+  ],
+  "trace_id": "trace-bgp-route-flap-001"
+}

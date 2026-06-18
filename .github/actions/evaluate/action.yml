@@ -1,0 +1,120 @@
+name: Telefix Evaluate
+description: Evaluate a canonical Telefix trajectory and gate unsafe agent releases.
+
+inputs:
+  trajectory-path:
+    description: Path to the canonical trajectory JSON file.
+    required: true
+  policy-path:
+    description: Optional path to an evaluation policy YAML file.
+    required: false
+    default: ""
+  fail-on-warning:
+    description: Whether warnings should fail the action.
+    required: false
+    default: "false"
+  json-output-path:
+    description: Optional path for the machine-readable JSON evaluation report.
+    required: false
+    default: ""
+  context-path:
+    description: Optional path to a JSON runtime context file.
+    required: false
+    default: ""
+
+outputs:
+  deployment-decision:
+    description: Deployment decision from Telefix.
+    value: ${{ steps.outputs.outputs.deployment_decision }}
+  unsafe-action-rate:
+    description: Unsafe action rate from the evaluation report.
+    value: ${{ steps.outputs.outputs.unsafe_action_rate }}
+  tool-precision:
+    description: Tool-selection precision from the evaluation report.
+    value: ${{ steps.outputs.outputs.tool_precision }}
+  loop-detected:
+    description: Whether loop detection triggered.
+    value: ${{ steps.outputs.outputs.loop_detected }}
+  state-drift-detected:
+    description: Whether state drift detection triggered.
+    value: ${{ steps.outputs.outputs.state_drift_detected }}
+
+runs:
+  using: composite
+  steps:
+    - name: Resolve report path
+      id: report
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.json-output-path }}" ]; then
+          report_path="${{ inputs.json-output-path }}"
+        else
+          report_path="${RUNNER_TEMP}/telefix-evaluation-report.json"
+        fi
+        mkdir -p "$(dirname "${report_path}")"
+        echo "path=${report_path}" >> "${GITHUB_OUTPUT}"
+
+    - name: Run Telefix evaluation
+      id: evaluate
+      shell: bash
+      run: |
+        set +e
+        command=(telefix evaluate "${{ inputs.trajectory-path }}" --json-output "${{ steps.report.outputs.path }}")
+
+        if [ -n "${{ inputs.policy-path }}" ]; then
+          command+=(--policy "${{ inputs.policy-path }}")
+        fi
+
+        if [ -n "${{ inputs.context-path }}" ]; then
+          command+=(--context "${{ inputs.context-path }}")
+        fi
+
+        if [ "${{ inputs.fail-on-warning }}" = "true" ]; then
+          command+=(--fail-on-warning)
+        fi
+
+        "${command[@]}"
+        exit_code=$?
+        echo "exit-code=${exit_code}" >> "${GITHUB_OUTPUT}"
+        exit 0
+
+    - name: Export Telefix outputs
+      id: outputs
+      shell: bash
+      run: |
+        python - <<'PY'
+        import json
+        import os
+        from pathlib import Path
+
+        report_path = Path("${{ steps.report.outputs.path }}")
+        output_path = Path(os.environ["GITHUB_OUTPUT"])
+
+        if report_path.exists():
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            state_drift = report.get("state_drift") or {}
+            values = {
+                "deployment_decision": report.get("decision", "error"),
+                "unsafe_action_rate": report.get("unsafe_actions", {}).get("unsafe_action_rate", ""),
+                "tool_precision": report.get("tool_selection", {}).get("precision", ""),
+                "loop_detected": report.get("loops", {}).get("loop_detected", ""),
+                "state_drift_detected": state_drift.get("drift_detected", False),
+            }
+        else:
+            values = {
+                "deployment_decision": "error",
+                "unsafe_action_rate": "",
+                "tool_precision": "",
+                "loop_detected": "",
+                "state_drift_detected": "",
+            }
+
+        with output_path.open("a", encoding="utf-8") as handle:
+            for key, value in values.items():
+                handle.write(f"{key}={str(value).lower() if isinstance(value, bool) else value}\n")
+        PY
+
+    - name: Enforce Telefix decision
+      shell: bash
+      run: |
+        exit "${{ steps.evaluate.outputs.exit-code }}"
