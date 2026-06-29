@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -16,6 +17,7 @@ def test_langgraph_pipeline_produces_deterministic_gate_decisions() -> None:
         check=False,
         capture_output=True,
         text=True,
+        env={**os.environ, "PYTHONWARNINGS": "ignore"},
     )
 
     assert completed.returncode == 0
